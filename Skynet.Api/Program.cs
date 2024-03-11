@@ -1,35 +1,24 @@
-using Skynet.Core.Contracts;
 using Skynet.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
-using Skynet.Api.Services;
+using Skynet.Api.Middleware;
+using Skynet.Api.Extensions;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
 builder.Services.AddControllers();
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-// Mapper Services
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
-// AppContext Services
-builder.Services.AddDbContext<AppDbContext>(
-	options => options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
-
-// Entities Services
-builder.Services.AddScoped<IProductService, ProductService>();
-
-
-// Repository Services
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddApplicationServices(builder.Configuration);
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+
+app.UseMiddleware<ExceptionMiddleware>();
+
+app.UseStatusCodePagesWithReExecute("/errors/{0}");
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

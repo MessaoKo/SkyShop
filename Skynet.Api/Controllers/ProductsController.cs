@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Skynet.Api.Errors;
 using Skynet.Core.Contracts;
 using Skynet.Core.Dtos;
 using Skynet.Core.Entities;
@@ -7,9 +8,7 @@ using Skynet.Infrastructure.Data;
 
 namespace Skynet.Api.Controllers;
 
-[Route("api/[controller]")]
-[ApiController]
-public class ProductsController : ControllerBase
+public class ProductsController : BaseApiController
 {
 	private readonly ILogger<ProductsController> _logger;
 	private readonly IProductService _productService;
@@ -60,7 +59,7 @@ public class ProductsController : ControllerBase
 			ProductToReturnDto? product = await _productService.GetById(id);
 
 			if (product is null)
-				return NotFound();
+				return NotFound(new ApiResponse(404));
 
 			return Ok(product);
 		}
