@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Skynet.Core.Contracts;
 using Skynet.Core.Entities;
+using Skynet.Infrastructure.Data;
 
 namespace Skynet.Api.Controllers;
 
@@ -10,11 +12,14 @@ public class ProductsController : ControllerBase
 {
 	private readonly ILogger<ProductsController> _logger;
 	private readonly IProductService _productService;
+	private readonly AppDbContext _appDbContext;
 
-	public ProductsController(ILogger<ProductsController> logger, IProductService productService)
+
+	public ProductsController(ILogger<ProductsController> logger, IProductService productService, AppDbContext appDbContext)
 	{
 		_logger = logger;
 		_productService = productService;
+		_appDbContext = appDbContext;
 	}
 
 	[HttpGet]
@@ -32,6 +37,20 @@ public class ProductsController : ControllerBase
 		{
 			return BadRequest(ex.Message);
 		}
+	}
+
+	[HttpGet("types")]
+
+	public async Task<ActionResult<IReadOnlyList<ProductType>>> GetProductTypes()
+	{
+		return Ok(await _appDbContext.ProductTypes.ToListAsync());
+	}
+
+
+	[HttpGet("brands")]
+	public async Task<ActionResult<IReadOnlyList<ProductType>>> GetProductBrands()
+	{
+		return Ok(await _appDbContext.ProductBrands.ToListAsync());
 	}
 
 	[HttpGet]
@@ -53,17 +72,17 @@ public class ProductsController : ControllerBase
 		}
 	}
 
-	[HttpPost]
-	public async Task<IActionResult> CreateProduct([FromBody] Product product)
-	{
-		try
-		{
-			Product newProduct = await _productService.CreateAsync(product);
-			return CreatedAtAction(nameof(GetProductById), new { Id = newProduct.Id }, newProduct);
-		}
-		catch (Exception ex)
-		{
-			return BadRequest(ex.Message);
-		}
-	}
+	//[HttpPost]
+	//public async Task<IActionResult> CreateProduct([FromBody] Product product)
+	//{
+	//	try
+	//	{
+	//		Product newProduct = await _productService.CreateAsync(product);
+	//		return CreatedAtAction(nameof(GetProductById), new { Id = newProduct.Id }, newProduct);
+	//	}
+	//	catch (Exception ex)
+	//	{
+	//		return BadRequest(ex.Message);
+	//	}
+	//}
 }

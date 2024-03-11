@@ -12,14 +12,20 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Mapper Services
 builder.Services.AddAutoMapper(typeof(Program));
 
+// AppContext Services
 builder.Services.AddDbContext<AppDbContext>(
 	options => options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
 
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
-
+// Entities Services
 builder.Services.AddScoped<IProductService, ProductService>();
+
+
+// Repository Services
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
 var app = builder.Build();
 
@@ -37,8 +43,8 @@ app.UseAuthorization();
 app.MapControllers();
 
 // Apply migrations and update database before app is run.
-
 using var scope  = app.Services.CreateScope();
+
 var services = scope.ServiceProvider;
 var context = services.GetRequiredService<AppDbContext>();
 var logger = services.GetRequiredService<ILogger<Program>>();

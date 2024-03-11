@@ -3,7 +3,6 @@ namespace Skynet.Core.Contracts;
 
 public interface IProductService
 {
-	Task<IReadOnlyList<Product>> GetAll();
-	Task<Product> GetById(int id);
-	Task<Product> CreateAsync(Product product);
+	Task<IReadOnlyList<Product?>> GetAll();
+	Task<Product?> GetById(int id);
 }
