@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Skynet.Core.Contracts;
+using Skynet.Core.Dtos;
 using Skynet.Core.Entities;
 using Skynet.Infrastructure.Data;
 
@@ -23,14 +24,11 @@ public class ProductsController : ControllerBase
 	}
 
 	[HttpGet]
-	public async Task<IActionResult> GetProducts()
+	public async Task<ActionResult<IReadOnlyList<ProductToReturnDto>>> GetProducts()
 	{
 		try
 		{
-			var svcOut = await _productService.GetAll();
-			if (svcOut is null)
-				return NotFound();
-
+			var svcOut = await _productService.GetAll() ?? throw new ArgumentNullException();
 			return Ok(svcOut);
 		}
 		catch (Exception ex)
@@ -54,12 +52,12 @@ public class ProductsController : ControllerBase
 	}
 
 	[HttpGet]
-	[Route("api/{id:int}")]
+	[Route("{id:int}")]
 	public async Task<IActionResult> GetProductById(int id)
 	{
 		try
 		{
-			Product? product = await _productService.GetById(id);
+			ProductToReturnDto? product = await _productService.GetById(id);
 
 			if (product is null)
 				return NotFound();
@@ -71,18 +69,4 @@ public class ProductsController : ControllerBase
 			return BadRequest(ex.Message);
 		}
 	}
-
-	//[HttpPost]
-	//public async Task<IActionResult> CreateProduct([FromBody] Product product)
-	//{
-	//	try
-	//	{
-	//		Product newProduct = await _productService.CreateAsync(product);
-	//		return CreatedAtAction(nameof(GetProductById), new { Id = newProduct.Id }, newProduct);
-	//	}
-	//	catch (Exception ex)
-	//	{
-	//		return BadRequest(ex.Message);
-	//	}
-	//}
 }

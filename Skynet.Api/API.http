@@ -1,4 +1,4 @@
-@API_HostAddress = https://localhost:7167
+@API_HostAddress = https://localhost:7001
 
 GET {{API_HostAddress}}/api/Products/
 Accept: application/json
