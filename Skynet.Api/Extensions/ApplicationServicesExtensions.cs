@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Skynet.Api.Errors;
-using Skynet.Api.Services;
 using Skynet.Core.Contracts;
 using Skynet.Infrastructure.Data;
 
@@ -21,8 +20,6 @@ public static class ApplicationServicesExtensions
 			options.UseSqlServer(config.GetConnectionString("Default"));
 		});
 
-		// EntityService
-		services.AddScoped<IProductService, ProductService>();
 
 		// Repository Services
 		services.AddScoped<IProductRepository, ProductRepository>();
@@ -48,6 +45,18 @@ public static class ApplicationServicesExtensions
 
 				return new BadRequestObjectResult(errorResponse);
 			};
+		});
+
+		// Cors Policy
+		services.AddCors(options =>
+		{
+			options.AddPolicy("DefaultPolicy",
+				builder =>
+				{
+					builder.WithOrigins("https://localhost:4200")
+						   .AllowAnyHeader()
+						   .AllowAnyMethod();
+				});
 		});
 		return services;
 	}

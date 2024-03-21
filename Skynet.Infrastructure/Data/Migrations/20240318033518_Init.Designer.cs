@@ -9,11 +9,11 @@ using Skynet.Infrastructure.Data;
 
 #nullable disable
 
-namespace Skynet.Infrastructure.Data.Migrations
+namespace Skynet.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240310012050_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240318033518_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

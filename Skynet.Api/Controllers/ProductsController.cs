@@ -1,71 +1,70 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Skynet.Api.Errors;
+using Skynet.Api.Helpers;
 using Skynet.Core.Contracts;
 using Skynet.Core.Dtos;
 using Skynet.Core.Entities;
-using Skynet.Infrastructure.Data;
+using Skynet.Core.Specifications;
 
 namespace Skynet.Api.Controllers;
 
 public class ProductsController : BaseApiController
 {
-	private readonly ILogger<ProductsController> _logger;
-	private readonly IProductService _productService;
-	private readonly AppDbContext _appDbContext;
+	private readonly IGenericRepository<Product> _productsRepo;
+	private readonly IGenericRepository<ProductBrand> _productBrandRepo;
+	private readonly IGenericRepository<ProductType> _productTypeRepo;
+	private readonly IMapper _mapper;
 
-
-	public ProductsController(ILogger<ProductsController> logger, IProductService productService, AppDbContext appDbContext)
+	public ProductsController(IGenericRepository<Product> productsRepo, IGenericRepository<ProductBrand> productBrandRepo, IGenericRepository<ProductType> productTypeRepo, IMapper mapper)
 	{
-		_logger = logger;
-		_productService = productService;
-		_appDbContext = appDbContext;
+		_mapper = mapper;
+		_productTypeRepo = productTypeRepo;
+		_productBrandRepo = productBrandRepo;
+		_productsRepo = productsRepo;
 	}
 
 	[HttpGet]
-	public async Task<ActionResult<IReadOnlyList<ProductToReturnDto>>> GetProducts()
+	public async Task<ActionResult<Pagination<ProductToReturnDto>>> GetProducts([FromQuery] ProductSpecParams productParams)
 	{
-		try
-		{
-			var svcOut = await _productService.GetAll() ?? throw new ArgumentNullException();
-			return Ok(svcOut);
-		}
-		catch (Exception ex)
-		{
-			return BadRequest(ex.Message);
-		}
+		var spec = new ProductsWithTypesAndBrandsSpecification(productParams);
+
+		var countSpec = new ProductWithFiltersForCountSpecificication(productParams);
+
+		var totalItems = await _productsRepo.CountAsync(countSpec);
+
+		var products = await _productsRepo.ListAsync(spec);
+
+		var data = _mapper
+			.Map<IReadOnlyList<Product>, IReadOnlyList<ProductToReturnDto>>(products);
+
+		return Ok(new Pagination<ProductToReturnDto>(productParams.PageIndex, productParams.PageSize, totalItems, data));
+	}
+
+	[HttpGet("{id}")]
+	//[ProducesResponseType(StatusCodes.Status200OK)]
+	//[ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+	public async Task<ActionResult<ProductToReturnDto>> GetProduct(int id)
+	{
+		var spec = new ProductsWithTypesAndBrandsSpecification(id);
+
+		var product = await _productsRepo.GetEntityWithSpec(spec);
+
+		if (product == null) return NotFound(new ApiResponse(404));
+
+		return _mapper.Map<Product, ProductToReturnDto>(product);
+	}
+
+	[HttpGet("brands")]
+	public async Task<ActionResult<IReadOnlyList<ProductBrand>>> GetProductBrands()
+	{
+		return Ok(await _productBrandRepo.ListAllAsync());
 	}
 
 	[HttpGet("types")]
-
 	public async Task<ActionResult<IReadOnlyList<ProductType>>> GetProductTypes()
 	{
-		return Ok(await _appDbContext.ProductTypes.ToListAsync());
+		return Ok(await _productTypeRepo.ListAllAsync());
 	}
 
-
-	[HttpGet("brands")]
-	public async Task<ActionResult<IReadOnlyList<ProductType>>> GetProductBrands()
-	{
-		return Ok(await _appDbContext.ProductBrands.ToListAsync());
-	}
-
-	[HttpGet]
-	[Route("{id:int}")]
-	public async Task<IActionResult> GetProductById(int id)
-	{
-		try
-		{
-			ProductToReturnDto? product = await _productService.GetById(id);
-
-			if (product is null)
-				return NotFound(new ApiResponse(404));
-
-			return Ok(product);
-		}
-		catch (Exception ex)
-		{
-			return BadRequest(ex.Message);
-		}
-	}
 }

@@ -8,7 +8,7 @@ using Skynet.Infrastructure.Data;
 
 #nullable disable
 
-namespace Skynet.Infrastructure.Data.Migrations
+namespace Skynet.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     partial class AppDbContextModelSnapshot : ModelSnapshot
