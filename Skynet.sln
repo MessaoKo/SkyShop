@@ -3,19 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skynet.Api", "Skynet.Api\Skynet.Api.csproj", "{0C82764A-06BE-46F3-8B3D-A43B6BF92441}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Skynet.Api", "Skynet.Api\Skynet.Api.csproj", "{0C82764A-06BE-46F3-8B3D-A43B6BF92441}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skynet.Infrastructure", "Skynet.Infrastructure\Skynet.Infrastructure.csproj", "{C4561320-3155-42A0-9B87-CD86FEFEF3C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Skynet.Infrastructure", "Skynet.Infrastructure\Skynet.Infrastructure.csproj", "{C4561320-3155-42A0-9B87-CD86FEFEF3C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skynet.Core", "Skynet.Core\Skynet.Core.csproj", "{A0F7DE96-D6BB-48AC-BC55-12B4C64EB34C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Skynet.Core", "Skynet.Core\Skynet.Core.csproj", "{A0F7DE96-D6BB-48AC-BC55-12B4C64EB34C}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "Skynet.UI", "Skynet.UI\Skynet.UI.esproj", "{1576A5F2-C931-4D32-9078-BDFB26919FBC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{0C82764A-06BE-46F3-8B3D-A43B6BF92441}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -30,5 +29,17 @@ Global
 		{A0F7DE96-D6BB-48AC-BC55-12B4C64EB34C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A0F7DE96-D6BB-48AC-BC55-12B4C64EB34C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A0F7DE96-D6BB-48AC-BC55-12B4C64EB34C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1576A5F2-C931-4D32-9078-BDFB26919FBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1576A5F2-C931-4D32-9078-BDFB26919FBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1576A5F2-C931-4D32-9078-BDFB26919FBC}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{1576A5F2-C931-4D32-9078-BDFB26919FBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1576A5F2-C931-4D32-9078-BDFB26919FBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1576A5F2-C931-4D32-9078-BDFB26919FBC}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BE6AEDBD-D2A5-422E-993F-68FABCCCE839}
 	EndGlobalSection
 EndGlobal
