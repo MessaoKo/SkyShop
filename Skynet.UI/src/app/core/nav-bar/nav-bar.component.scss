@@ -1,13 +1,27 @@
 header{
-    background-color: whitesmoke;
+    background-color: black;
 }
-        .cart-no {
-            position: absolute;
-            height: 24px !important;
-            width: 24px !important;
-            border-radius: 50%;
-            background: blue;
-            text-align : center;
-            top: -12px;
-            right: 32px;
-        }
+.cart-no {
+    position: absolute;
+    height: 24px !important;
+    width: 24px !important;
+    border-radius: 50%;
+    background: orange;
+    text-align: center;
+    top: -12px;
+    right: 32px;
+}
+
+
+a {
+    text-decoration: none;
+    color: orange;
+
+    &.active {
+        color: white;
+    }
+}
+
+.logo {
+    cursor: pointer;
+}

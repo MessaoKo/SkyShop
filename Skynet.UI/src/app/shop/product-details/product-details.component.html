@@ -1,0 +1,46 @@
+<!-- <div *ngIf="product">
+    <div class="card" style="max-width: 640px;">
+        <div class="row g-0">
+            <div class="col-md-4">
+                <img src="{{product.pictureUrl}}" class="img-fluid rounded-start">
+            </div>
+            <div class="col-md-8 bg-warning">
+                <div class="card-body">
+                    <h5 class="card-title">{{product.name}}</h5>
+                    <p class="card-text">{{product.description}}</p>
+                    <div class="d-flex justify-content-start align-items-center  mt-1 mb-1">
+                        <i class="fa fa-minus-circle text-warning me-2" style="cursor: pointer; font-size: 2em;"></i>
+                        <span class="font-weight-bold" style="font-size: 1.5em;">2</span>
+                        <i class="fa fa-plus-circle text-warning me-2" style="cursor: pointer; font-size: 2em;"></i>
+                        <button class="btn btn-outline-secondary ms-4">Add to cart</button>
+                    </div>
+                    <p class="card-text">
+                        <small class="text-muted">Price: {{product.price}}</small>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+<div class="container">
+    <div class="title">PRODUCT DETAIL</div>
+    <div class="detail">
+        <div class="image">
+            <img src="{{product?.pictureUrl}}">
+        </div>
+        <div class="content">
+            <h1 class="name">{{product?.name}}</h1>
+            <div class="price">{{product?.price}}</div>
+            <div class="buttons">
+                <i class="fa fa-minus-circle text-warning ms-2" style="cursor: pointer; font-size: 2em;"></i>
+                <span class="font-weight-bold" style="font-size: 1.5em;">2</span>
+                <i class="fa fa-plus-circle text-warning me-2" style="cursor: pointer; font-size: 2em;"></i>
+                <button class="btn btn-outline-secondary ms-4">Add to cart</button>
+            </div>
+            <div class="description">
+                <p>{{product?.description}}</p>
+            </div>
+        </div>
+    </div>
+</div>
